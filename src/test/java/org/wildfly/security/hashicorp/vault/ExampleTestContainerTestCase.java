@@ -13,10 +13,10 @@ import org.testcontainers.vault.VaultContainer;
 import static org.junit.Assert.assertEquals;
 import static org.wildfly.common.Assert.assertTrue;
 
-public class ElytronVaultTestCase {
+public class ExampleTestContainerTestCase {
 
     @Test
-    public void testVaultIsRunningAndConfigured() throws Exception {
+    public void exampleTestVaultStartConfigureAndFetch() throws Exception {
 
         VaultContainer<?> vaultContainer = new VaultContainer<>("hashicorp/vault:1.13")
                 .withVaultToken("myroot")
@@ -66,5 +66,4 @@ public class ElytronVaultTestCase {
 
         vaultContainer.stop();
     }
-
 }
