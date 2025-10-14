@@ -1,24 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright The WildFly Authors
+  ~ SPDX-License-Identifier: Apache-2.0
+  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.wildfly.security.elytron.hashicorp.vault</groupId>
+    <parent>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-parent</artifactId>
+        <version>50</version>
+    </parent>
+
+    <groupId>org.wildfly.security.hashicorp.vault</groupId>
     <artifactId>wildfly-elytron-hashicorp-vault</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1-Alpha</version>
 
-    <name>wildfly-elytron-hashicorp-vault</name>
-    <description>TODO</description>
+    <name>WildFly Elytron HashiCorp Vault Integration</name>
+    <description>An integration library that provides WildFly Elytron credential store backed by HashiCorp Vault.</description>
+    <url>https://wildfly-security.github.io/wildfly-elytron/</url>
 
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.wildfly.elytron>2.6.4.Final</version.wildfly.elytron>
         <version.vault.java.driver>6.2.0</version.vault.java.driver>
+
+        <!-- Nexus Settings -->
+        <nexus.repository.staging>wildfly-staging</nexus.repository.staging>
+        <nexus.staging.tag>wildfly-elytron-hashicorp-vault-${project.version}</nexus.staging.tag>
+        <nexus.repository.release>wildfly-security-incubator</nexus.repository.release>
     </properties>
+
+    <scm>
+        <connection>scm:git:git@github.com:wildfly-security-incubator/wildfly-elytron-hashicorp-vault.git</connection>
+        <developerConnection>scm:git:git@github.com:wildfly-security-incubator/wildfly-elytron-hashicorp-vault</developerConnection>
+        <url>https://github.com/wildfly-security-incubator/wildfly-elytron-hashicorp-vault</url>
+    </scm>
 
     <dependencies>
         <!-- Vault Java Driver -->
@@ -28,7 +50,12 @@
             <version>${version.vault.java.driver}</version>
         </dependency>
 
-        <!-- Test dependencies-->
+        <dependency>
+            <groupId>org.kohsuke.metainf-services</groupId>
+            <artifactId>metainf-services</artifactId>
+            <version>1.11</version>
+        </dependency>
+
         <dependency>
             <groupId>org.wildfly.security</groupId>
             <artifactId>wildfly-elytron-credential</artifactId>
@@ -44,18 +71,23 @@
             <artifactId>wildfly-elytron-password-impl</artifactId>
             <version>${version.wildfly.elytron}</version>
         </dependency>
+
+
+        <!-- Test dependencies-->
         <!-- https://mvnrepository.com/artifact/org.testcontainers/vault -->
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>vault</artifactId>
             <version>1.21.3</version>
+            <!--            <scope>test</scope>-->
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>5.5.5</version>
+            <version>5.5.6</version>
+            <!--            <scope>test</scope>-->
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.rest-assured/json-path -->
@@ -63,6 +95,7 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>json-path</artifactId>
             <version>5.5.5</version>
+            <!--            <scope>test</scope>-->
         </dependency>
     </dependencies>
 
@@ -77,6 +110,20 @@
                         <includes>
                             <include>**/*TestCase.java</include>
                         </includes>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <!-- Release Plugin Configuration -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <configuration>
+                        <!-- Prepare -->
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <tagNameFormat>@{project.version}</tagNameFormat>
+                        <pushChanges>false</pushChanges>
+                        <!-- Perform -->
+                        <localCheckout>true</localCheckout>
                     </configuration>
                 </plugin>
             </plugins>
