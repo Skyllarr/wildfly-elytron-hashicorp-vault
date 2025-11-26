@@ -12,7 +12,7 @@
         <version>50</version>
     </parent>
 
-    <groupId>org.wildfly.security.hashicorp.vault</groupId>
+    <groupId>org.wildfly.security</groupId>
     <artifactId>wildfly-elytron-hashicorp-vault</artifactId>
     <version>1.0.0.Alpha1-SNAPSHOT</version>
 
